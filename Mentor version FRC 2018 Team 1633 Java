@@ -1,0 +1,190 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+package org.usfirst.frc.team1633.robot;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
+
+//added the following "probably needed" packages
+
+import edu.wpi.first.wpilibj.networktables;
+import edu.wpi.first.wpilibj.buttons;
+import edu.wpi.first.wpilibj.can;
+import edu.wpi.first.wpilibj.drive;
+import edu.wpi.first.wpilibj.smartdashboard;
+import edu.wpi.first.wpilibj.vision;
+import edu.wpi.first.wpilibj.????
+
+
+
+public class Motortest extends IterativeRobot {
+
+//These are the variables for the channels on the RoboRIO
+
+//These should be for the four gearbox CIM motors
+
+private static final int leftFrontCim = 0;
+private static final int leftBackCim = 1;
+private static final int rightFrontCim = 2;
+private static final int rightBackCim = 3;
+
+//These would be for the lift using window/denso
+private static final int leftPulleyLift = 4;
+private static final int rightPulleyLift = 5;
+
+//These section for 4 Talon SRX CAN Controllers for the Intake Neverest Motors
+
+
+//These are the variables for the solenoids: Lift & Intake 
+private static final int leftLiftFrameExtend = 0; 
+private static final int leftLiftFrameRetract = 1;
+private static final int rightLiftFrameExtend = 2;
+private static final int rightLiftFrameRetract = 3;
+private static final int leftIntakeExtend = 4; 
+private static final int leftIntakeRetract = 5;
+private static final int rightIntakeExtend = 6;
+private static final int rightIntakeRetract = 7;
+
+//Solenoids controlling pistons
+DoubleSolenoid leftLiftFrameCtrl;
+DoubleSolenoid rightLiftFrameCtrl;
+DoubleSolenoid leftIntakeCtrl;
+DoubleSolenoid rightIntakeCtrl;
+
+//Robot Base Drive Motors
+Spark LeftFrontCim;
+Spark LeftBackCim;
+SpeedControllerGroup leftGearBox = new SpeedControllerGroup(leftFrontCim, leftBackCim);
+
+Spark rightFrontCim;
+Spark rightBackCim;
+SpeedControllerGroup rightGearBox = new SpeedControllerGroup(rightFrontCim, rightBackCim);
+
+//These are the VictorSPs with the PWMs 
+VictorSP leftPulleyLift;
+VictorSP rightPulleyLift;
+
+//Variable for the port # of the joystick on the Driver station
+final int JoystickChannel = 0;
+
+//Creating an joystick object with the name "stick"
+Joystick stick = new Joystick(JoystickChannel);
+
+//mentor comment on joystick - consider using an "arcade" joystick control
+
+//Creating a joystick button object with the name of "ONEButton" and assigning it 
+JoystickButton ONEButton = new JoystickButton(stick, 3);
+
+//Creating a timer obeject with the name time
+Timer time = new Timer();
+
+//mentor comment on timer above  - need to be more descriptive and accurate with your naming convention. "time" might cause headaches later //when you need to use multiple timers
+
+//Declaration of the base robot drive 
+DifferentialDrive robotDrive = new DifferentialDrive(leftGearBox, rightGearBox);
+
+
+@Override
+public void robotInit() {
+
+//This would get initialized when the bot is started
+
+//Pneumatics Solenoid
+leftLiftFrameCtrl = new DoubleSolenoid(leftLiftFrameExtend, leftLiftFrameRetract);
+rightLiftFrameCtrl = new DoubleSolenoid(rightLiftFrameExtend, rightLiftFrameRetract);
+
+leftIntakeCtrl = new DoubleSolenoid(leftIntakeExtend, leftIntakeRetract);
+rightIntakeCtrl = new DoubleSolenoid(rightIntakeExtend, rightIntakeRetract);
+
+//Robot Drive
+leftFrontCim = new Spark(0);
+leftBackCim = new Spark(1);
+
+rightFrontCim = new Spark(2);
+rightBackCim = new Spark(3);
+
+leftPulleyLift = new Talon(4);
+rightPulleyLift = new Talon(5);
+
+
+
+robotDrive = new DifferentialDrive(leftGearBox, rightGearBox);
+
+rightGearBox.setInverted(true);
+
+}
+
+public void autonomousPeriodic() {
+
+//The timer would get started 
+time.start();
+
+//The robot will move at full speed foward 
+robotDrive.tankDrive(1, 1);
+
+//Telementary for autonomous
+System.out.println(time.get());
+
+}
+
+@Override
+public void teleopPeriodic() {
+
+//Telementary for the robot 
+System.out.println("STICKFORWARD" + stick.getRawAxis(1));
+System.out.println("STICKTURN" + stick.getRawAxis(2));
+
+//Drive for the robot 
+robotDrive.arcadeDrive(-stick.getRawAxis(1), stick.getRawAxis(2));
+
+//Frame Lift Pneumatics Control
+
+//This would get the solenoids moving when the 2nd button is pressed in the joystick
+//Please refrence the Driver Station for the assignment of the buttons
+
+if (stick.getRawButtonPressed(2)) {
+
+if(rightLiftFrameCtrl.get() == Value.rightLiftFrameExtend && leftLiftFrameCtrl.get() == Value.leftLiftFrameExtend) {
+
+rightLiftFrameCtrl.set(Value.rightLiftFrameRetract);
+leftLiftFrameCtrl.set(Value.leftLiftFrameRetract);
+}else {
+
+rightLiftFrameCtrl.set(Value.rightLiftFrameExtend);
+leftLiftFrameCtrl.set(Value.leftLiftFrameExtend);
+}
+
+//Intake Pneumatics Control
+
+If (stick.getRawButtonPressed(3)) {
+if(rightIntakeCtrl.get() == Value.rightIntakeExtend && leftIntakeCtrl.get() == Value.leftIntakeExtend) {
+
+rightIntakeCtrl.set(Value.rightIntakeRetract);
+leftIntakeCtrl.set(Value.leftIntakeRetract);
+}else {
+
+rightIntakeCtrl.set(Value.rightIntakeExtend);
+leftIntakeCtrl.set(Value.leftIntakeExtend);
+}
+}
+
+}
+
+}
+
+}
