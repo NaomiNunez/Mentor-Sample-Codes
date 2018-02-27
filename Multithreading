@@ -1,0 +1,25 @@
+//Good Example - by using a flag "!Thread.interrupted()" we are able to stop the thread from never exiting.
+
+public class Robot extends IterativeRobot {
+    public void robotInit() {
+        Thread t = new Thread(() -> {
+            while (!Thread.interrupted()) {
+					// Not stuck anymore!
+            }
+        });
+        t.start();
+    }
+}
+
+//Bad Example - code will never exit and will only stop when entire JVM stops. Java cannot stop the thread unless the thread stops itself.
+
+public class Robot extends IterativeRobot {
+    public void robotInit() {
+        Thread t = new Thread(() -> {
+            while (true) {
+					// We are stuck here
+            }
+        });
+        t.start();
+    }
+}
