@@ -1,0 +1,17 @@
+//The WPI Robotics Library supports the sensors that are supplied in the FRC kit of parts, as well as many commonly used sensors available to FIRST teams through industrial and hobby robotics suppliers.
+
+//Types of supported sensors
+//	Vision Systems: Camera, Image Processing
+//	Accelerometer
+//	Gyro
+//	Compass
+//	Rangefinder
+//	Encoders
+
+//On the roboRIO, the FPGA implements all the high speed measurements through dedicated hardware ensuring accurate measurements no matter how many sensors and motors are connected to the robot. This is an improvement over previous systems, which required complex real time software routines. The library natively supports sensors in the categories shown below:
+
+//	Wheel/motor position measurement - Gear-tooth sensors, encoders, analog encoders, and potentiometers
+//	Robot orientation - Compass, gyro, accelerometer, ultrasonic rangefinder
+//	Generic - Pulse output Counters, analog, I2C, SPI, Serial, Digital input
+
+//There are many features in the WPI Robotics Library that make it easy to implement sensors that don’t have prewritten classes. For example, general purpose counters can measure period and count from any device generating output pulses. Another example is a generalized interrupt facility to catch high speed events without polling and potentially missing them.
