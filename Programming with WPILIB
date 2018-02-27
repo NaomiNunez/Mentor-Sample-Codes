@@ -1,0 +1,20 @@
+//Example
+
+public void autonomousInit() {
+     isAuto = true;
+     CommandBase.shooter.zeroRPMOffsets();
+ \    CommandBase.turret.zeroAngleOffsets();
+     // instantiate the command used for the autonomous period
+     autonomousCommand = (Command) (OI.getInstance().auton.getSelected());
+ \    // schedule the autonomous command (example)
+     autonomousCommand.start();
+}
+
+//Comments: 
+//Java objects must be allocated manually, but are freed automatically when no references remain.
+//References to objects instead of pointers are used. All objects must be allocated with the new operator and are referenced using the dot //(.) operator (e.g. gyro.getAngle()).
+//Header files are not necessary and references are automatically resolved as the program is built.
+//Only single inheritance is supported, but interfaces are added to Java to get most of the benefits that multiple inheritance provides.
+//Checks for array subscripts out of bounds, uninitialized references to objects and other runtime errors that might occur in program //development.
+//Compiles to byte code for a virtual machine, and must be interpreted.
+
