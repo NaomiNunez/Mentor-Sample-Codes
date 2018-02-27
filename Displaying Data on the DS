@@ -1,0 +1,11 @@
+//Displaying Data on the DS - Dashboard Overview
+//Often it is desirable to get feedback from the robot back to the drivers. The communications protocol between the robot and the driver station includes provisions for sending program specific data. The program at the driver station that receives the data is called the dashboard.
+
+//Network Tables - What is it?
+//Network Tables is the name of the client-server protocol used to share variables across software in FRC. The robot acts as the Network Tables server and software which wishes to communicate with it connects as clients. The most common Network Tables client is the dashboard.
+
+//Smart Dashboard
+The term Smart Dashboard originally referred to the Java dashboard client first released in 2011. This client used the Network Tables protocol to automatically populate indicators to match the data entered into Network Tables on the robot side. Since then the term has been blurred a bit as the LabVIEW dashboard has also converted over to using Network Tables. Additional information on SmartDashboard can be found in the SmartDashboard Manual.
+
+//More information on the LabVIEW Dashboard, including an article about using the LabVIEW Dashboard with C++ or Java code can be found in the FRC Driver Station manual.
+
