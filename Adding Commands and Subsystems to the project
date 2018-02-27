@@ -1,0 +1,26 @@
+Commands and Subsystems each are created as classes. The plugin has built-in templates for both Commands and Subsystems to make it easier for you to add them to your program.
+
+Adding subsystems to the project
+
+To add a subsystem, right-click on the project name and select "New" then "Subsystem" in the drop down menu.
+
+Naming the subsystem
+
+Fill in a name for the subsystem. This will become the resultant class name for the subsystem so the name has to be a valid class name for your language.
+
+Subsystem created in project
+
+You can see the new subsystem created in the Subsystems folder in the project. To learn more about creating subsystems, see the Simple Subsystems article.
+
+Adding a command to the project
+
+A command can be created for the project using steps similar to creating a subsystem. First right-click on the project name in the Project Explorer and select New->Command.
+
+Set the command name
+
+Enter the Command name into the "Class Name" field in the dialog box. This will be the class name for the Command so it must be a valid class name for your language.
+
+Command created in the project
+
+You can see that the Command has been created in the Commands folder in the project in the Project Explorer window. To learn more about creating commands, see the Creating Simple Commands article.
+
