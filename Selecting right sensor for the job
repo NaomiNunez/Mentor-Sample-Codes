@@ -1,0 +1,88 @@
+The articles following this one provide details on the operation and use of a variety of sensors with WPILib, but how do you know which sensor to use for a particular task? This article attempts to explain possible sensor choices for a variety of common FRC tasks
+
+Detecting one or two positions of a mechanism
+Detecting one or two positions for a motor driven mechanism is a very common FRC task. The most common occurrence is detecting when a mechanism reaches a limit on either end, but detecting a desired position or home position is also fundamentally the same task.
+
+Limit Switches
+Mechanical limit switches are one of the most common solutions to this scenario. If the switches truly are defining the limits of the mechanism make sure that the switches are set up in a position where they can't be missed by the mechanism and wont get damaged by the mechanism. Limit switches are useful because they are very simple to implement, are fairly cheap, and can be used in a large variety of situations.
+
+Switches - Using limit switches to control behavior
+
+Detecting the position of a mechanism at many different points, or points that are not limits
+Sometimes you need to know how high up your elevator is, without having that height be the top of your elevator, or how high up an arm is from its starting position, or what angle your shooter head is pointed at. These problems could be solved by a clever team with some tricky placements of limit switches and catches for them, but there are other sensors that are designed for that job.
+
+Ultrasonic Sensors
+Distance sensors like ultrasonic sensors can give you a fairly accurate measurement of how far away the closest object in its field of vision is from the sensor, meaning that if you set it up correctly, you will be able to stop your arm or elevator when it gets to the points you desire. Usually these measurements will be accurate to 2-3 inches, meaning if you need much greater accuracy, you might want to look into a different sensor in this section, but this should be good enough for most cases.
+
+Ultrasonic Sensors - Measuring robot distance to a surface
+
+Infrared Distance Sensors
+Infrared distance sensors are very similar to ultrasonic sensors, they just use a different method of measurement. These sensors are not explicitly covered in our tutorials, but most of these sensors have an analog output, meaning you can use the analog input class to get a voltage from the sensor, which converts to a specific distance in most cases. The advantage of infrared sensors compared to ultrasonic sensors is that they are not affected by a noisy stadium, in some cases an ultrasonic sensor can get a less accurate value because of how much noise exists at a competition.
+
+Analog inputs
+
+Counters and Encoders
+If your arm or elevator is driven by a motor, you can measure the number of rotations the motor has turned to get how high up the arm or elevator is. This method is more of a guess and check method than a known height measurement check, but with a couple of tests and some print line statements, you can easily find the number of rotations you need to get to certain heights, just remember that your measurement is always based on something, and if your hard coded number of rotations is based on it resting on the floor, and it starts in the air slightly one match, it will be at the wrong set point when it gets up to the top, so it is important to know how to initially set it up.
+
+Counters - Measuring rotation, counting pulses and more
+
+Encoders - Measuring rotation of a wheel or other shaft
+
+Potentiometers
+If you need to know the angle of the arm, a potentiometer will be the job for you, it converts the angle of motion to a readable analog value. This works really well for knowing where your shooter is pointed, or how high up your arm is, and with some sensors you can measure distance traveled linearly too, so it can work with an elevator.
+
+Potentiometers - Measuring joint angle or linear motion
+
+Accelerometers
+Measuring the tilt of a surface is possible with an accelerometer, for an arm that would give you a good idea of what the angle is, if that is how you wanted to measure it. These are really useful for limits that you keep for reasons like the robot shouldn't go further than that or it will possibly break itself, and sometimes isn't accurate enough for pinpoint aiming.
+
+Accelerometers - measuring acceleration and tilt
+
+Driving Straight
+Sometimes your robot is not being controlled by a human that can easily correct any slight deviations to the robots direction. When you need you robot to drive itself straight, you have a couple sensors that will work to get the job done.
+
+Gyros
+The gyroscope is a sensor that points in a direction, and will tell you when you deviate from that direction, and how far. This can help us correct for one of the drive motors being slightly slower than the other, or to give us an accurate measurement of how far we have turned when we are in autonomous. They also measure off of an initial point, so if the robot is put in the wrong place, it will not know that.
+
+Gyros - Measuring rotation and controlling robot driving direction
+
+Encoders
+If you have encoders on the drive motors, you can measure how far the wheels have turned, and if one of them measures further than the other, you can correct for it. This is not as effective especially when turning because wheels can slip, and encoders aren't quite as accurate as gyroscopes for these measurements.
+
+Encoders - Measuring rotation of a wheel or other shaft
+
+How far have I gone?
+When you are programming an autonomous program, you will most likely need to drive, and because your robot doesn't have the senses we have without us adding them, it wont know how far its gone or how far it needs to go without sensors.
+
+Encoders
+This is where encoders really shine. Encoders measure the number of rotations a motor has gone since you last reset them. This means you can calculate the rotations to distance calculation for your robot by doing the math for the different gear and pulley ratios. This gets a little less accurate the further away from your wheels you put your encoder, because you can loose distance in slack from the pulleys, the belts jumping pegs on the pulleys, and the wheels slipping on the surface, all giving you a longer distance than you have really gone. This is somewhat avoided when you have multiple encoders by averaging the rotations they measure, so that any slippage is mitigated by having better data.
+
+Encoders - Measuring rotation of a wheel or other shaft
+
+Distance Sensors
+Although it is not very common due to practical concerns of setting up the robot on the field, distance sensors can be used to tell how far you have gone if you have a point to measure from. Because you are measuring from a field element or wall, it is usually not possible to tell how far you have gone after a turn, or how far you have gone if its too far away from a static object.
+
+Ultrasonic Sensors - Measuring robot distance to a surface
+
+Cameras and Vision
+Most of the time, when you are thinking about how to solve a problem, you are not trying to do it blindfolded with huge padded gloves on with ear plugs in. This is pretty much how the robot is experiencing the world without any sensors, it can't see the game piece, it can't feel how tightly it is grabbing that tube, without sensors to detect these things, the robot can't know if its done its job correctly. One of the major things humans do to get information from our world is look at it, judge things like position and distance, and identify locations of important things around us.
+
+Why use vision?
+Vision is a very powerful tool, it can give you an idea of how far you are from something, how many items you have in front of you, where you are pointing, and how fast you are moving, all from one sensor. Things like how far away something is can be measured by knowing the viewing angle of the camera, the resolution, and the size of a known object in the view. Counting the number of items is a matter of object detection and recognition, and movement is measuring how fast things move toward you. These can also be coupled with the ability to stream the cameras view to the driverstation, so the driver and operator can see from the robots perspective instead of all the way across the field behind the glass.
+
+Why not use vision?
+To use vision, you need to have a few things: A good quality camera, a way to process the visual information into meaningful data, and someone who knows or is willing to learn how very advanced visual identification is done by outside libraries. With the roborio it is possible for us to actually do some or all of the computations required to turn the camera video into meaningful data, and cameras are available in the kit of parts, but for more advanced visual operations you may need to have additional processing power and higher quality cameras. Because of this most teams use vision for basic things, or just uses it as more information that the driver can use, which can help immensely.
+
+How fast is that wheel spinning?
+Sometimes, especially with shooters, you want to know how fast a wheel is spinning.
+
+Counters and Encoders
+You can use a counter or encoder to measure the number of rotations over a given period of time to get the speed the wheel is spinning at, which can be really useful for shooter wheels so that you don't shoot unless your wheel is up to speed.
+
+Counters - Measuring rotation, counting pulses and more
+
+Encoders - Measuring rotation of a wheel or other shaft
+
+Other Sensors and Problems
+Ultimately, it is up to the teams to find solutions to their individual problems when it comes to sensors on their robot. Sometimes the sensors available to the teams are not good enough, encoders not able to read at the speeds you need, ultrasonic sensors too inaccurate after a certain distance, these are all challenges to solve, and is the reason you are really here. These challenges are what teach students and mentors on teams how creative they can really be when the challenge and deadlines are put in front of them. This is when some of the best and most creative solutions to problems are created.
+
