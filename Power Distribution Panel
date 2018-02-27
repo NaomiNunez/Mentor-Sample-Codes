@@ -1,0 +1,22 @@
+//The Power Distribution Panel (PDP) for 2015 adds the capability to measure the current to each device connected to any of the circuit breaker protected 12V outputs. Having this capability offers the opportunity to use a number of algorithm requiring sensing of the torque being developed by motors without requiring additional hardware. The PDP is connected to the RoboRIO through the CAN bus and the libraries take care of managing the communications.
+
+//Create an instance of the PowerDistributionPanel object to use it:
+
+	PowerDistributionPanel pdp = new PowerDistributionPanel();
+
+//Note: it is not necessary to create a PowerDistributionPanel object unless you need to read values from it. The board will work and supply power on all the channels even if the object is never created.
+
+//PDP CAN ID
+//To work with the current versions of C++ and Java WPILib, the CAN ID for the PDP must be 0.
+
+//Reading the PDP voltage and temperature
+//You can read the incoming voltage to the PDP and the temperature of the components on the PDP. Measuring the voltage can be important if motors are operating at a high torque setting causing the system battery voltage to drop.
+
+//Reading the per-channel current on the PDP
+//You can read the current on individual channels of the PDP using the PowerDistributionPanel object. To read the current on channel 1 use the method getCurrent:
+
+double current = pdp.getCurrent(1);
+
+//This will return the current value in amps.
+
+//Note: the channel numbers are 0-based.
