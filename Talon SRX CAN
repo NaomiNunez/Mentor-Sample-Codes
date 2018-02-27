@@ -1,0 +1,9 @@
+//The Talon SRX motor controller is a CAN-enabled "smart motor controller" from Cross The Road Electronics/VEX Robotics. The Talon SRX can be controlled over the CAN bus or PWM interface. When using the CAN bus control, this device can take inputs from limit switches and potentiometers, encoders, or similar sensors in order to perform advanced control such as limiting or PID(F) closed loop control on the device.
+
+//Extensive documentation about programming the Talon SRX in all three FRC languages can be found in the Talon SRX Software Reference Manual on CTRE's Talon SRX product page.
+
+//Note: CAN Talon SRX has been removed from WPILib. See this blog for more info and find the CTRE Toolsuite installer here: http://www.ctr-electronics.com/control-system/hro.html#product_tabs_technical_resources
+
+//Going forward, WPILib will not include direct support for many of these sophisticated devices (including CAN Jaguar and CAN Talon SRX). Instead, it allows the integration of 3rd party code into teams’ WPILib programs. Suppliers provide installers which place their libraries into the correct location on the user’s system. WPILib tools will automatically detect the libraries and allow them to be used in FRC programs. FRC will create a “one-stop-shop” page for these installers to help teams easily locate the software for their selected devices.
+
+//We acknowledge that this is a compromise; teams will take additional steps to get and install libraries, but WPILib development is more sustainable and there’s a clearer implementation and ownership path for 3rd parties.
