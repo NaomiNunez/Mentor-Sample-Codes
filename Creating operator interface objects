@@ -1,0 +1,8 @@
+Joystick stick = new Joystick(1);
+
+double speed = stick.getX();
+
+//Generally objects connected to the Driver station PC via USB take a single argument indicating the USB port they are connected to. A //single Joystick class is provided which should provide the functionality needed to interface with any joystick or gamepad which works //with the FRC Driver Station.
+
+//Creates a Joystick object connected to USB port 1 on the DS (listed first in the Setup tab of the DS).
+//Gets the current X axis value of the joystick and stores it in the variable "speed".
