@@ -1,0 +1,83 @@
+//Sample Robot
+//	The SampleRobot base class is exactly what it sounds like, good for writing small sample programs, particularly to try out ideas. While it can be used for constructing a competition program it is not recommended because it is very hard to extend as additional capabilities are added. Instead choose any of the other templates described below.
+
+//IterativeRobot
+//	The IterativeRobot base class has methods that are periodically called each time new data arrives from the Driver Station. The idea is that for each mode that the robot is operating in (autonomous, teleop, or test) the appropriate periodic method is called where the program does a small amount of work. It is important not to have any long running code in the periodic methods such as loops or delays. Doing so could result in missing driver station updates that can negatively impact robot performance. Each period is approximately 20 milliseconds by can vary depending on CPU load on the roboRIO, the driver station laptop, or network traffic. If you require precise timing, for example to implement robot control algorithms it is not recommended and you should instead use TimedRobot (below) which has precise timing between periods.
+
+//Example Iterative Robot
+public class RobotTemplate extends IterativeRobot {
+
+     public void robotInit() {
+
+     }
+
+     public void autonomousInit() {
+
+     }
+
+     public void autonomousPeriodic() {
+
+     }
+}
+
+//The Iterative Robot base class assists with the most common code structure by handling the state transitions and looping in the base class instead of in the robot code. For each state (autonomous, teleop, disabled, test) there are two methods that are called:
+
+//	Init methods - The init method for a given state is called each time the corresponding state is entered (for example, a transition from disabled to teleop will call teleopInit()). Any initialization code or resetting of variables between modes should be placed here.
+//	Periodic methods - The periodic method for a given state is called each time the robot receives a Driver Station packet in the corresponding state, approximately every 20ms. This means that all of the code placed in each periodic method should finish executing in 20ms or less. The idea is to put code here that gets values from the driver station and updates the motors. You can read the joysticks and other Driver Station inputs more often, but you’ll only get the previous value until a new update is received. By synchronizing with the received updates your program will put less of a load on the roboRIO CPU leaving more time for other tasks such as camera processing.
+
+//TimedRobot
+//	TimedRobot is the same as IterativeRobot except that it uses a timer (Notifier) to guarantee that the periodic methods are called at a predictable time interval. When getting driver station data such as joystick values the most recent value will be provided since the time interval may not line up with the 20 millisecond delivery of data. This is the recommended base class for most robot programs. Just as with IterativeRobot, it is very important to not have long running code or loops in the periodic methods or the timing may slip.
+
+//TimedRobot base class is the same as as IterativeRobot (above) except that it calls the periodic functions using the specified time interval. The default time interval is 0.02 seconds (20 milliseconds) for each call to the appropriate periodic function. The default time internal can be overridden by calling the the setPeriod (java) or SetPeriod (C++) with the time in seconds as a double value. Internally an Notifier is used to set the interval.
+
+//Example TimedRobot
+public class RobotTemplate extends SampleRobot {
+
+     //This function is called once each time the robot enters autonomous mode.
+     public void autonomous() {
+          // Put code here
+          Timer.delay(0.05);
+     }
+
+     // This function is called once each time the robot enters teleop mode.
+     public void operatorControl() {
+         while(isOperatorControl() && isEnabled()) {
+               //Put code here
+               //Timer.delay(0.05);
+         }
+     }
+}
+
+
+//Example TimedRobot 2
+public class RobotTemplate extends SampleRobot {
+
+    /**
+     * This function is called once each time the robot enters autonomous mode.
+     */
+    public void autonomous() {    
+        while (isAutonomous() && isEnable()) {
+            // Put code here
+            Timer.delay(0.05);
+        }
+    }
+
+    /**
+     * This function is called once each time the robot enters teleop mode.
+     */
+    public void operatorControl() {
+        while (isOperatorControl() && isEnabled()) {
+            // Put code here
+            Timer.delay(0.05);
+        }
+    }
+}
+
+//The SampleRobot class is the simplest template as most of the state flow is directly visible in your program and not hidden in the WPILib code. The downside is that implementing this state flow incorrectly can lead to complexity in your programs. Your robot program overrides the operatorControl() and autonomous() methods that are called by the base at the appropriate time. Note that these methods are called only called once each time the robot enters the appropriate mode and are not automatically terminated. Your code in the operatorControl method must contain a loop that checks the robot mode in order to keep running and taking new input from the Driver Station. The autonomous code shown uses a similar loop.
+
+It is recommended for beginners to choose the Iterative Template or Command Based robot. SampleRobot can be used by advanced users wishing to have more control over the flow of their program.
+
+//Command based robot
+//	While based on the TimedRobot base class, the command based robot programming style is recommended for most teams. It makes it easy to break up the program into Commands which each implement some robot behavior such as raising an arm to some position, driving for some distance, etc. It also makes the program easily extensible and testable. The RobotBuilder utility (included with the eclipse plugins) provides an easy way of organizing the program. The dashboards (SmartDashboard and Shuffleboard) allow you to easily debug and test command based programs.
+
+//While not strictly a base class, the Command-based robot model is a method for creating larger programs, more easily, that are easier to extend. There is built in support with a number of classes to make it easy to design your robot, build subsystems, and control interactions between the robot and the operator interface. In addition it provides a simple mechanism for writing autonomous programs. The command-based model is described in detail in the Command-Based Programming section of the C++ and Java manuals.
