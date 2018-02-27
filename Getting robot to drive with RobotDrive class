@@ -1,0 +1,139 @@
+//WPILib provides a RobotDrive object that handles most cases of driving the robot either in autonomous or teleop modes. It is created with either two or four speed controller objects. There are methods to drive with either Tank, Arcade, or Mecanum modes either programmatically or directly from Joysticks.
+
+//Creating a RobotDrive object with Talon speed controllers
+
+RobotDrive drive = new RobotDrive(0,1,2,3) //4 motor drive
+RobotDrive drive = new RobotDrive(0,1) //2 motor drive
+
+//Create the RobotDrive object specifying either two or four motor ports. By default the RobotDrive constructor will create Talon class instances attached to each of those ports.
+
+//Inverting the sense of some of the motors
+
+drive.setInvertedMotor(MotorType.kFrontLeft, true);
+
+//It might turn out that some of the motors used in your RobotDrive object turn in the opposite direction. This often happens depending on the gearing of the motor and the rest of the drive train. If this happens, you can use the SetInvertedMotor() method, as shown, to reverse a particular motor.
+
+//Using other types of speed controllers
+
+public class RobotTemplate extends SampleRobot {
+
+	RobotDrive myDrive;
+	Victor frontLeft, frontRight, rearLeft, rearRight;
+	
+    public void robotInit() {
+    	frontLeft = new Victor(1);
+    	frontRight = new Victor(2);
+    	rearLeft = new Victor (3);
+    	rearRight = new Victor (4);
+    	myDrive = new RobotDrive(frontLeft, rearLeft, frontRight, rearRight);
+    }
+		
+	//You can use RobotDrive with other types of speed controllers as well. In this case you must create the speed controller objects manually and pass the references or pointers to the RobotDrive constructor.
+	
+//Tank driving with two joysticks
+
+public class RobotTemplate extends SampleRobot {
+
+	RobotDrive myDrive;
+	Joystick left, right;
+	
+    public void robotInit() {
+    	myDrive = new RobotDrive(1,2,3,4);
+    	left = new Joystick(1);
+    	right = new Joystick(2);
+    }
+
+    public void autonomousPeriodic() {
+
+    }
+
+    public void operatorControl() {
+    	while (isOperatorControl() && isEnabled()) {
+    		myDrive.tankDrive(left,  right);;
+    		Timer.delay(0.01);
+    	}
+    }
+		
+//In this example a RobotDrive object is created with 4 default Talon speed controllers. In the operatorControl method the RobotDrive instance tankDrive method is called and it will select the Y-axis of each of the joysticks by default. There are other versions of the tankDrive method that can be used to use alternate axis or just numeric values.
+
+//Arcade driving with a single joystick
+
+public class RobotTemplate extends SampleRobot {
+
+	RobotDrive myDrive;
+	Joystick driveStick;
+	
+    public void robotInit() {
+    	myDrive = new RobotDrive(1,2,3,4);
+    	driveStick = new Joystick(1);
+    }
+
+    public void autonomousPeriodic() {
+
+    }
+
+    public void operatorControl() {
+    	while (isOperatorControl() && isEnabled()) {
+    		myDrive.arcadeDrive(driveStick);
+    		Timer.delay(0.01);
+    	}
+    }
+
+//Similar to the example above a single joystick can be used to do single-joystick driving (called arcade). In this case, the X-axis is selected by default for the turn axis and the Y-axis is selected for the speed axis.
+
+//Autonomous driving using the RobotDrive object
+
+public class RobotTemplate extends SampleRobot {
+
+	RobotDrive myDrive;
+	Joystick driveStick;
+	Gyro gyro;
+	static final double Kp = 0.03;
+	
+    public void robotInit() {
+    	myDrive = new RobotDrive(1,2,3,4);
+    	gyro = new AnalogGyro(1);
+    }
+
+    public void autonomousPeriodic() {
+    	while (isAutonomous() && isEnabled()) {
+    		double angle = gyro.getAngle();
+    		myDrive.arcadeDrive(-1.0, -angle * Kp);
+    		Timer.delay(0.01);
+    	}
+    }
+		
+//The RobotDrive object also has a number of features that makes it ideally suited for autonomous control. This example illustrates using a gyro for driving in a straight line (the current heading) using the arcade method for steering. While the robot continues to drive in a straight line the gyro headings are roughly zero. As the robot veers off in one direction or the other, the gyro headings vary either positive or negative. This is very convenient since the arcade method turn parameter is also either positive or negative. The magnitude of the gyro headings sets the rate of the turn, that is more off zero the gyro heading is, the faster the robot should turn to correct.
+
+//This is a perfect use of proportional control where the rate of turn is proportional to the gyro heading (being off zero). The heading is in values of degrees and can easily get pretty far off, possibly as much as 10 degrees as the robot drives. But the values for the turn in the arcade method are from zero to one. To solve this problem, the heading is scaled by a constant to get it in the range required by the turn parameter of the arcade method. This parameter is called the proportional gain, often written as kP.
+
+//In this particular example the robot is designed such that negative speed values go forward. Also, not that the the angle from the gyro is written as "-angle". This is because this particular robot turns in the opposite direction from the gyro corrections and has to be negated to correct that. Your robot might be different in both cases depending on gearing and motor connections.
+
+//Mecanum driving
+public class RobotTemplate extends SampleRobot {
+
+	RobotDrive myDrive;
+	Joystick moveStick, rotateStick;
+	
+	public void robotInit() {
+		myDrive = new RobotDrive(0, 1, 2, 3);
+		moveStick = new Joystick(0);
+		rotateStick = new Joystick(1);
+	}
+	
+	public void autonomous() {
+	}
+	
+	public void operatorControl() {
+		while (isOperatorControl() && isEnabled()) {
+			myDrive.mecanumDrive_Cartesian(moveStick.getY(), moveStick.getX(), rotateStick.getX(), 0);
+			Timer.delay(0.02);
+		}
+	}
+}
+
+//The RobotDrive can also handle Mecanum driving. That is using Mecanum wheels on the chassis to enable the robot to drive in any direction without first turning. This is sometimes called Holonomic driving.
+
+//In this example there are two joysticks controlling the robot. moveStick supplies the direction vector for the robot, that is which way it should move irrespective of the heading. rotateStick supplies the rate of rotation using the x-axis of that joystick. If you push the moveStick full forward the robot will move forward (relative to the robot). At the same time, if you rotate the rotateStick, the robot will spin in the rotation direction with the rotation rate from the amount of twist, while the robot continues to move forward.
+
+//If you want the movement commands to be relative to the field, rather than relative to the robot's current heading, you will need to pass in the robot's current angle in place of the 0 above. This angle is usually derived using a Gyro.
