@@ -1,0 +1,6 @@
+Gyro headingGyro = new AnalogGyro(1);
+double heading = headingGyro.getAngle();
+
+//Generally all the objects in WPILib that connect to one of the roboRIO breakout boards have one argument in the constructor when created //where you specify the channel or port number it is connected to. The above example illustrate the conventions used in WPILib for Java.
+//Creates an AnalogGyro object connected to analog channel 1 and stores its address in "headingGyro".
+//Gets the current heading from the AnalogGyro in degrees and stores it in the variable "heading".
