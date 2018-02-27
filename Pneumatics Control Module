@@ -1,0 +1,11 @@
+//The Pneumatics Control Module (PCM) is a CAN-based device that provides complete control over the compressor and up to 8 solenoids per module. The PCM is integrated into WPILib through a series of classes that make it simple to use. The examples shown here are for Java programs, the C++ classes have the same names except for the method capitalization, following the same conventions as used throughout the rest of WPILib.
+
+//Moving from the old Compressor and Solenoid classes should be fairly easy. The closed loop control of the Compressor and Pressure switch is handled by the PCM hardware and the Solenoids are handled by the upgraded Solenoid class that now controls the solenoid channels on the PCM.
+
+//An additional PCM module can be used where the modules corresponding solenoids are differentiated by the module number in the constructors of the Solenoid and Compressor classes.
+
+//Controlling the Compressor
+//The PCM handles the closed loop control of the compressor internally when the pressure switch and compressor are properly wired. To enable this control, all that is needed is an instantiated Solenoid object and the robot to be Enabled. For more information see Operating a compressor for pneumatics.
+
+//Using Solenoids
+//For the RoboRIO the WPILib Solenoid class has been replaced by one that now implements solenoids using the PCM. The same methods will now control pneumatics plugged into the Solenoid ports on the PCM so your code should run mostly unchanged. For more information see Operating pneumatic cylinders - Solenoids
