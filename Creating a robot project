@@ -1,0 +1,18 @@
+Create a command-based robot project by using one of the template projects that are provided with the Eclipse plugins.
+
+Create the project
+
+Right-click in the project explorer window in some empty space. Select "New" then "Project...".
+
+Selecting the project type
+
+Expand the WPILib Robot C++ or Java Development folders if necessary and select the appropriate project type, Robot C++ or Java Project. You will only see the choices for the plugin you have installed.
+
+Select the project example
+
+Name your project in box, then select the radio button for Command-Based Robot.
+
+Observe sample project in the Project Explorer window
+
+Notice that the CommandBasedRobotTemplate project has been added to the other projects that might have been in the Project Explorer window. There is a folder for Commands and another folder for Subsystems.
+
