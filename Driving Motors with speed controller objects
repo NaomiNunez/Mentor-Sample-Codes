@@ -1,0 +1,47 @@
+//Driving motors with speed controller objects (Victors, Talons and Jaguars)
+//The WPI Robotics library has extensive support for motor control. There are a number of classes that represent different types of speed controllers and servos. The WPI Robotics Library currently supports two classes of speed controllers, PWM based motor controllers (Jaguars, Victors and Talons) and CAN based motor controllers (Jaguar). WPILIb also contains a composite class called RobotDrive which allows you to control multiple motors with a single object. This article will cover the details of PWM motor controllers, CAN controllers and RobotDrive will be covered in separate articles.
+
+//PWM Controllers, brief theory of operation
+//The acronym PWM stands for Pulse Width Modulation. For the Victor, Talon and Jaguar (using the PWM input) motor controllers, PWM can refer to both the input signal and the method the controller uses to control motor speed. To control the speed of the motor the controller must vary the perceived input voltage of the motor. To do this the controller switches the full input voltage on and off very quickly, varying the amount of time it is on based on the control signal. Because of the mechanical and electrical time constants of the types of motors used in FRC this rapid switching produces an effect equivalent to that of applying a fixed lower voltage (50% switching produces the same effect as applying ~6V).
+
+//The PWM signal the controllers use for an input is a little bit different. Even at the bounds of the signal range (max forward or max reverse) the signal never approaches a duty cycle of 0% or 100%. Instead the controllers use a signal with a period of either 5ms or 10ms and a midpoint pulse width of 1.5ms. The Talon and Victor controllers use typical hobby RC controller timing of 1ms to 2ms and the Jaguar uses an expanded timing of ~.7ms to ~2.3ms.
+
+//Raw vs Scaled output values
+//In general, all of the motor controller classes in WPILib are set up to take a scaled -1.0 to 1.0 value as the output to an actuator. The PWM module in the FPGA is capable of generating PWM signals with periods of 5, 10 or 20ms and can vary the pulse width in 2000 steps of ~.001ms each around the midpoint (1000 steps in each direction around the midpoint). The raw values sent to this module are in this 0-2000 range with 0 being a special case which holds the signal low (disabled). The class for each motor controller contains information about what the typical bound values (min, max and each side of the deadband) are as well as the typical midpoint. WPILib can then use these values to map the scaled value into the proper range for the motor controller. This allows for the code to switch seamlessly between different types of controllers and abstracts out the details of the specific signaling.
+
+//Calibrating Speed Controllers
+//So if WPILib handles all this scaling, why would you ever need to calibrate your speed controller? The values WPILib uses for scaling are approximate based on measurement of a number of samples of each controller type. Due to a variety of factors, the timing of an individual speed controller may vary slightly. In order to definitively eliminate "humming" (midpoint signal interpreted as slight movement in one direction) and drive the controller all the way to each extreme, calibrating the controllers is still recommended. In general, the calibration procedure for each controller involves putting the controller into calibration mode then driving the input signal to each extreme, then back to the midpoint. Precise details for each controller can be found in the User Guides: Talon, Jaguar, Victor, VictorSP, TalonSRX
+
+//PWM and Safe PWM Classes
+//PWM
+
+//The PWM class is the base class for devices that operate on PWM signals and is the connection to the PWM signal generation hardware in the roboRIO. It is not intended to be used directly on a speed controller or servo. The PWM class has shared code for Victor, Jaguar, Talon, and Servo subclasses that set the update rate, deadband elimination, and profile shaping of the output.
+
+//Safe PWM
+
+//The SafePWM class is a subclass of PWM that implements the RobotSafety interface and adds watchdog capability to each speed controller object. The RobotSafety interface will be discussed further in another article.
+
+//Constructing a Speed Controller object
+
+Jaguar exampleJaguar = new Jaguar(0);
+Talon exampleTalon = new Talon(1);
+TalonSRX exampleTalonSRX = new TalonSRX(2);
+Victor exampleVictor = new Victor(11);
+VictorSP exampleVictorSP = new VictorSP(12);
+Speed controller objects are constructed by passing in a channel. No other parameters are passed into the constructor.
+
+//Setting parameters
+
+Jaguar exampleJaguar = new Jaguar(0);
+exampleJaguar.enableDeadbandElimination(true);
+
+//All of the settable parameters of the motor controllers inherit from the underlying PWM class and are thus identical across the controllers. The code above shows only a single controller type (Jaguar) as an example. There are a number of settable parameters of a PWM object, but only one is recommended for robot code to modify directly:
+
+//Deadband Elimination - Set to true to have the scaling algorithms eliminate the controller deadband. Set to false (default) to leave the controller deadband intact.
+
+//Setting Speed
+
+Jaguar exampleJaguar = new Jaguar(0);
+exampleJaguar.set(0.7);
+
+//As noted previously, speed controller objects take a single speed parameter varying from -1.0 (full reverse) to +1.0 (full forward).
