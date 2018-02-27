@@ -1,0 +1,8 @@
+Class Naming Rules: Initial upper case letter the camel case(mixed upper/lower case) except acronyms which are all upper case
+	example: Victor, SimpleRobot, PWM
+Method Naming Rules: Initial lower case letter then camel case
+	example: isAutonomous, getAngle
+Member Variable Rules: "m_" followed by the member variable name starting with a lower case letter then camel case
+	example: m_deleteSpeedControllers;, m_sensitivity
+Local Variable Naming Rules: Initial Lower case
+	example: targetAngle
