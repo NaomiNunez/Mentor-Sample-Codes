@@ -1,0 +1,23 @@
+//For On/Off control of motors or other mechanisms such as solenoids, lights or other custom circuits, WPILib has built in support for relay outputs designed to interface to the Spike H-Bridge Relay from VEX Robotics. These devices utilize a 3-pin output (GND, forward, reverse) to independently control the state of two relays connected in an H-Bridge configuration. This allows the relay to provide power to the outputs in either polarity or turn both outputs on at the same time.
+
+//Relay connection overview
+//The roboRIO provides the connections necessary to wire IFI spikes via the relay outputs. The breakout board provides a total of eight outputs, four forward and four reverse. The forward output signal is sent over the pin farthest from the edge of the board, labeled as FWD on the silkscreen, while the reverse signal output is sent over the center pin, labeled REV. The final pin is a ground connection.
+
+//Relay Directions in WPILib
+//Within WPILib relays can be set to kBothDirections (reversible motor or two direction solenoid), kForwardOnly (uses only the forward pin), or kReverseOnly (uses only the reverse pin). If a value is not input for direction, it defaults to kBothDirections . This determines which methods in the Relay class can be used with a particular instance.
+
+//Setting Relay Directions
+
+exampleRelay = new Relay(1);
+exampleRelay = new Relay(1, Relay.Value.kForward);
+
+exampleRelay.set(Relay.Value.kOn);
+exampleRelay.set(Relay.Value.kForward);
+
+
+//Relay state is set using the set() method. The method takes as a parameter an enumeration with the following values:
+
+//kOff - Turns both relay outputs off
+//kForward - Sets the relay to forward (M+ @ 12V, M- @ GND)
+//kReverse - Sets the relay to reverse (M+ @ GND, M- @ 12V)
+//KOn - Sets both relay outputs on (M+ @ 12V, M- @ 12V). Note that if the relay direction is set such that only the forward or reverse pins are enabled this method will be equivalent to kForward or kReverse, however it is not recommended to use kOn in this manner as it may lead to confusion if the relay is later changed to use kBothDirections. Using kForward and kReverse is unambiguous regardless of the direction setting.
