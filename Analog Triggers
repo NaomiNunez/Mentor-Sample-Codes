@@ -1,0 +1,48 @@
+//An analog trigger is a way to convert an analog signal into a digital signal using resources built into the FPGA. The resulting digital signal can then be used directly or fed into other digital components of the FPGA such as the counter or encoder modules. The analog trigger module works by comparing analog signals to a voltage range set by the code. The specific return types and meanings depend on the analog trigger mode in use.
+
+//Creating an Analog Trigger
+
+AnalogTrigger trigger0 = new AnalogTrigger(0);
+AnalogInput ai1 = new AnalogInput(1);
+AnalogTrigger trigger1 = new AnalogTrigger(ai1);
+
+//Constructing an analog trigger requires passing in a channel number or a created Analog Channel object.
+
+//Setting Analog Trigger Voltage Range
+
+AnalogTrigger trigger0 = new AnalogTrigger(0);
+trigger.setLimitsRaw(2048, 3200);
+trigger.setLimitsVoltage(0, 3.4);
+
+//The voltage range of the analog trigger can be set in either raw units (0 to 4096 representing 0V to 5V) or voltages. In both cases the value set does not account for oversampling, if oversampling is used the user code must perform the appropriate compensation of the trigger window before setting.
+
+//Filtering and Averaging
+
+AnalogTrigger trigger0 = new AnalogTrigger(0);
+trigger.setAveraged(true);
+trigger.setAveraged(false);
+trigger.setFiltered(true);
+
+//The analog trigger can optionally be set to use either the averaged value (output from the average and oversample engine) or a filtered value instead of the raw analog channel value. A maximum of one of these options may be selected at a time, the filter cannot be applied on top of the averaged signal.
+
+//Filtering
+The filtering option of the analog trigger uses a 3-point average reject filter. This filter uses a circular buffer of the last three data points and selects the outlier point nearest the median as the output. The primary use of this filter is to reject datapoints which errantly (due to averaging or sampling) appear within the window when detecting transitions using the Rising Edge and Falling Edge functionality of the analog trigger (see below).
+
+//Analog Trigger Direct Outputs
+
+AnalogTrigger trigger0 = new AnalogTrigger(0);
+boolean value;
+value = trigger.getInWindow();
+value = trigger.getTriggerState();
+
+//The analog trigger class has two direct types of output:
+
+//In Window - Returns true if the value is inside the range and false if it is outside (above or below)
+//Trigger State - Returns true if the value is above the upper limit, false if it is below the lower limit and maintains the previous state if in between (hysteresis)
+//Analog Trigger Output Class
+//The analog trigger output class is used to represent a specific output from an analog trigger. This class is primarily used as the interface between classes such as Counter or Encoder and an Analog Trigger. When used with these classes, the class will create the AnalogTriggerOutput object automatically when passed the AnalogTrigger object.
+
+//This class contains the same two outputs as the AnalogTrigger class plus two additional options (note these options cannot be read directly as they emit pulses, they can only be routed to other FPGA modules):
+
+//Rising Pulse - In rising pulse mode the trigger generates a pulse when the analog signal transitions directly from below the lower limit to above the upper limit. This is typically used with the rollover condition of an analog sensor such as an absolute magnetic encoder or continuous rotation potentiometer.
+//Falling Pulse - In falling pulse mode the trigger generates a pulse when the analog signal transitions directly from above the upper limit to below the lower limit. This is typically used with the rollover condition of an analog sensor such as an absolute magnetic encoder or continuous rotation potentiometer.
